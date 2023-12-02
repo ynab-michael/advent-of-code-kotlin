@@ -1,3 +1,7 @@
+package Day01
+
+import readInput
+
 fun main() {
     class Word(private val letters: String, val int: Int) {
         private var found = ""
@@ -114,12 +118,12 @@ fun main() {
         return sum
     }
 
-    val test1Input = readInput("Day01_part1_test")
+    val test1Input = readInput("Day01/part1_test")
     check(part1(test1Input) == 142)
-    val test2Input = readInput("Day01_part2_test")
+    val test2Input = readInput("Day01/part2_test")
     check(part2(test2Input) == 281)
 
-    val input = readInput("Day01")
+    val input = readInput("Day01/input")
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")
 }
