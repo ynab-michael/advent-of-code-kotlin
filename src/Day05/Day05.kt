@@ -52,22 +52,6 @@ fun main() {
     }
 
     fun part2(input: List<String>): BigInteger {
-        val (_,seedsText) = input.first().split(": ")
-        val seeds = mutableListOf<BigInteger>()
-        var index: BigInteger? = null
-        for (part in seedsText.split(" ")) {
-            if (index == null) {
-                index = part.toBigInteger()
-            } else {
-                val end = part.toBigInteger() - 1.toBigInteger() + index
-                while (index < end) {
-                    seeds.add(index)
-                    index++
-                }
-                index = null
-            }
-        }
-
         val maps = mutableListOf<MutableList<SourceToDestination>>()
 
         var currentMap = mutableListOf<SourceToDestination>()
@@ -87,19 +71,46 @@ fun main() {
         }
 
         var lowest = (0).toBigInteger()
-        for (seed in seeds) {
-            var num = seed
-            for (map in maps) {
-                val applicableLookup = map.find { it.inRange(num) }
-                if (applicableLookup != null) {
-                    num = applicableLookup.translate(num)
+
+        val (_,seedsText) = input.first().split(": ")
+        var index: BigInteger? = null
+        for (part in seedsText.split(" ")) {
+            if (index == null) {
+                index = part.toBigInteger()
+            } else {
+                val end = part.toBigInteger() - 1.toBigInteger() + index
+                println("working through range $index to $end")
+                while (index < end) {
+                    var num = index!!
+                    for (map in maps) {
+                        val applicableLookup = map.find { it.inRange(num) }
+                        if (applicableLookup != null) {
+                            num = applicableLookup.translate(num)
+                        }
+                    }
+                    if (lowest == (0).toBigInteger() || num < lowest) {
+                        println("new lowest: $num")
+                        lowest = num
+                    }
+                    index++
                 }
-            }
-            if (lowest == (0).toBigInteger() || num < lowest) {
-                println(num)
-                lowest = num
+                index = null
             }
         }
+
+//        for (seed in seeds) {
+//            var num = seed
+//            for (map in maps) {
+//                val applicableLookup = map.find { it.inRange(num) }
+//                if (applicableLookup != null) {
+//                    num = applicableLookup.translate(num)
+//                }
+//            }
+//            if (lowest == (0).toBigInteger() || num < lowest) {
+//                println(num)
+//                lowest = num
+//            }
+//        }
         return lowest
     }
 
